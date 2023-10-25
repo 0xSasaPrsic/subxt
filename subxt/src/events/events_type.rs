@@ -177,7 +177,22 @@ impl EventDetails {
         let variant_index = u8::decode(input)?;
 
         let fields_start_idx = all_bytes.len() - input.len();
+        if pallet_index != 31 && pallet_index != 32 {
+            let end_idx_ = all_bytes.len() - input.len();
+            let fields_start_idx_ = all_bytes.len() - input.len();
+            let fields_end_idx_ = all_bytes.len() - input.len();
 
+            return Ok(EventDetails {
+                phase,
+                index,
+                start_idx,
+                fields_start_idx: fields_start_idx_,
+                fields_end_idx: fields_end_idx_,
+                end_idx: end_idx_,
+                all_bytes,
+                metadata,
+            })
+        }
         // Get metadata for the event:
         let event_metadata = metadata.event(pallet_index, variant_index)?;
         tracing::debug!(
